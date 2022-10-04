@@ -16,9 +16,10 @@ public class Tabla extends JFrame {
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
-    final static JLabel jLabelEQUALS=new JLabel(" = ");
+    final static JLabel jLabelEQUALS = new JLabel(" = ");
+    
     Container pane1 = this.getContentPane();
-    JTextField jTextNumbers;
+    JTextField jTextNumber;
     JLabel jLabelTitulo;
     GridLayout gl;
 
@@ -41,9 +42,7 @@ public class Tabla extends JFrame {
 
 // JLabel principal
         jLabelTitulo = new JLabel("Tabla de multiplicar");
-        if (shouldWeightX) {
-            c.weightx = 0.5;
-        }
+
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
@@ -61,16 +60,26 @@ public class Tabla extends JFrame {
         pane1.add(jComboBox1, c);
         //JTextField 
         for (int i = 0; i < 10; i++) {
-            jTextNumbers = new JTextField("" + i);
-            jTextNumbers.setName("" + i);
+            if (shouldWeightX) {
+                c.weightx = 0.5;
+            }
+            jTextNumber = new JTextField("" + i);
+            jTextNumber.setName("" + i);
             c.fill = GridBagConstraints.HORIZONTAL;
             c.ipady = 10;
             c.weightx = 0.3;
             c.gridwidth = 1;
             c.gridx = 0;
-            c.gridy = 3+i;
-            pane1.add(jTextNumbers,c);
-          
+            c.gridy = 3 + i;
+            jTextNumber.setEditable(false);
+            pane1.add(jTextNumber, c);
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.ipady = 10;
+            c.weightx = 0.3;
+            c.gridwidth = 1;
+            c.gridx = 1;
+            c.gridy = 3 + i;
+            pane1.add(jLabelEQUALS);
         }
 
     }
