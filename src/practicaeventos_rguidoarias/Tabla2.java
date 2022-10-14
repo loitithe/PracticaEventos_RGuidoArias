@@ -42,11 +42,18 @@ public class Tabla2 extends JFrame implements ItemListener, ActionListener {
 
     JButton jButtonSumar = new JButton("Sumar");
     private int num1, num2;
+    private int resultado;
 
+    /**
+     * Constructor principal
+     */
     public Tabla2() {
         initComp();
     }
-    
+
+    /**
+     * Funcion que inicializa los componentes
+     */
     void initComp() {
         jButtonSumar.addActionListener(this);
         GridBagLayout gb = new GridBagLayout();
@@ -72,6 +79,7 @@ public class Tabla2 extends JFrame implements ItemListener, ActionListener {
                 jTextEquals.setEditable(false);
                 jTextEquals.setHorizontalAlignment(JTextField.CENTER);
                 jTextResultado[i] = new JTextField();
+                jTextResultado[i].setHorizontalAlignment(JTextField.CENTER);
                 jTextResultado[i].setEditable(false);
                 pane1.add(jTextFieldNumero[i], createConstraints(0, i + 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH, GridBagConstraints.CENTER, new Insets(4, 10, 10, 4)));
                 pane1.add(jTextEquals, createConstraints(1, i + 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH, GridBagConstraints.CENTER, new Insets(4, 10, 10, 4)));
@@ -95,15 +103,15 @@ public class Tabla2 extends JFrame implements ItemListener, ActionListener {
 
     /**
      *
-     * @param gridx
-     * @param gridy
-     * @param gridwidth
-     * @param gridheight
-     * @param weightx
-     * @param weighty
-     * @param fill
-     * @param anchor
-     * @param insets
+     * @param gridx specify the row
+     * @param gridy specify the column
+     * @param gridwidth specify number of columns
+     * @param gridheight specify number of rows
+     * @param weightx space among columns
+     * @param weighty space among rows
+     * @param fill specify how to resize
+     * @param anchor specify where to place
+     * @param insets specify external padding
      * @return
      */
     private static GridBagConstraints createConstraints(int gridx, int gridy, int gridwidth, int gridheight,
@@ -123,6 +131,11 @@ public class Tabla2 extends JFrame implements ItemListener, ActionListener {
 
     }
 
+    /**
+     * Gestión del JComboBox
+     *
+     * @param e variable del evento
+     */
     @Override
     public void itemStateChanged(ItemEvent e) {
         int numSeleccionado = 0;
@@ -133,12 +146,17 @@ public class Tabla2 extends JFrame implements ItemListener, ActionListener {
                 try {
                     jTextResultado[i].setText("" + (numSeleccionado * i));
                 } catch (Exception ee) {
-                    ee.getMessage();
+                    System.err.println(ee.getMessage());
                 }
             }
         }
     }
 
+    /**
+     * Gestion del jButton
+     *
+     * @param e variable del evento
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jButtonSumar) {
@@ -146,15 +164,19 @@ public class Tabla2 extends JFrame implements ItemListener, ActionListener {
         }
     }
 
+    /**
+     * Función que recoge los y devuelve la suma como Integer
+     *
+     * @return integer con la suma
+     */
     int suma() {
-
         try {
             num1 = Integer.parseInt(jTextNum1.getText());
             num2 = Integer.parseInt(jTextNum2.getText());
-            return num1 + num2;
+            resultado = num1 + num2;
         } catch (Exception e) {
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
-        return 0;
+        return resultado;
     }
 }
