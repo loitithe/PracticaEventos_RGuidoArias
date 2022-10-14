@@ -21,7 +21,7 @@ public class PracticaEventos_RGuidoArias {
 //        tabla1.setLocation(500,400);
 //        tabla1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    Tabla2 e = new Tabla2();
+    Manejador e = new Manejador();
     e.setVisible(true);
     e.setSize(400,500);
     e.setLocation(500,400);
