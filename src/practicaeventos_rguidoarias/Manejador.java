@@ -6,15 +6,11 @@ package practicaeventos_rguidoarias;
 
 import java.awt.GridBagConstraints;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 /**
  *
@@ -26,21 +22,22 @@ public class Manejador extends JFrame implements ItemListener, ActionListener {
     GridBagConstraints c;
     Container pane1 = this.getContentPane();
 
-    JLabel labelTitulo = new JLabel("Tabla de multiplicar");
+    Etiquetas labelTitulo = new Etiquetas("Tabla de multiplicar");
     JComboBox jComboBox;
 
     CajaTexto jTextFieldNumero[] = new CajaTexto[10];
     CajaTexto jTextEquals;
     CajaTexto jTextResultado[] = new CajaTexto[10];
 
-    JLabel lblNumero1 = new JLabel("Numero1");
-    JLabel lblNumero2 = new JLabel("Numero2");
-    JLabel lblResultado = new JLabel("Resultado");
-    JTextField jTextNum1 = new JTextField();
-    JTextField jTextNum2 = new JTextField();
+    Etiquetas lblNumero1 = new Etiquetas("Numero1");
+    Etiquetas lblNumero2 = new Etiquetas("Numero2");
+    Etiquetas lblResultado = new Etiquetas("Resultado");
+    CajaTexto jTextNum1 = new CajaTexto();
+    CajaTexto jTextNum2 = new CajaTexto();
     CajaTexto jTextResult = new CajaTexto();
 
-    JButton jButtonSumar = new JButton("Sumar");
+    Boton jButtonSumar = new Boton("Sumar");
+    final Color colorBotonDefecto = jButtonSumar.getBackground();
     private int num1, num2;
     private int resultado;
     Matematica m;
@@ -64,19 +61,22 @@ public class Manejador extends JFrame implements ItemListener, ActionListener {
         c = new GridBagConstraints();
         labelTitulo.setHorizontalAlignment(JLabel.CENTER);
         pane1.add(labelTitulo, createConstraints(0, 0, 3, 1, 1.0, 1.0, GridBagConstraints.BOTH, GridBagConstraints.CENTER, new Insets(4, 10, 10, 4)));
-        
+
         jComboBox = new JComboBox();
         jComboBox.addItemListener(this);
         for (int i = 0; i < 10; i++) {
             jComboBox.addItem(i);
         }
         pane1.add(jComboBox, createConstraints(0, 1, 3, 1, 1.0, 1.0, GridBagConstraints.BOTH, GridBagConstraints.CENTER, new Insets(4, 10, 10, 4)));
-
+        jComboBox.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy());
         for (int i = 0; i < 13; i++) {
             if (i < 10) {
                 jTextFieldNumero[i] = new CajaTexto(String.valueOf(i));
+                jTextFieldNumero[i].setFocusable(false);
                 jTextEquals = new CajaTexto(" = ");
+                jTextEquals.setFocusable(false);
                 jTextResultado[i] = new CajaTexto();
+                jTextResultado[i].setFocusable(false);
                 pane1.add(jTextFieldNumero[i], createConstraints(0, i + 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH, GridBagConstraints.CENTER, new Insets(4, 10, 10, 4)));
                 pane1.add(jTextEquals, createConstraints(1, i + 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH, GridBagConstraints.CENTER, new Insets(4, 10, 10, 4)));
                 pane1.add(jTextResultado[i], createConstraints(2, i + 2, 1, 1, 1.0, 1.0, GridBagConstraints.BOTH, GridBagConstraints.CENTER, new Insets(4, 10, 10, 4)));
@@ -94,6 +94,44 @@ public class Manejador extends JFrame implements ItemListener, ActionListener {
             }
 
         }
+        jButtonSumar.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                jButtonSumar.setBackground(Color.GREEN);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                jButtonSumar.setBackground(colorBotonDefecto);
+            }
+        });
+        /**
+         * Gestionamos la pulsacion de teclado en nuestro boton
+         */
+        jButtonSumar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
+                    jButtonSumar.doClick();
+                }
+            }
+        });
+        
+        jComboBox.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getExtendedKeyCode()==KeyEvent.VK_ENTER) {
+                    
+              numeroSeleccionado();
+                }
+            }
+        
+        });
+
+        jTextResult.setFocusable(false);
+        jTextNum1.setFocusable(true);
+        jTextNum2.setFocusable(true);
+        jButtonSumar.setFocusable(true);
 
     }
 
@@ -134,18 +172,18 @@ public class Manejador extends JFrame implements ItemListener, ActionListener {
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-        int numSeleccionado = 0;
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-            numSeleccionado = jComboBox.getSelectedIndex();
-            System.out.println("seleccionado ; " + numSeleccionado);
-            for (int i = 0; i < 10; i++) {
-                try {
-                    jTextResultado[i].setText("" + (numSeleccionado * i));
-                } catch (Exception ee) {
-                    System.err.println(ee.getMessage());
-                }
-            }
-        }
+//        int numSeleccionado = 0;
+//        if (e.getStateChange() == ItemEvent.SELECTED) {
+//            numSeleccionado = jComboBox.getSelectedIndex();
+//            for (int i = 0; i < 10; i++) {
+//                try {
+//                    jTextResultado[i].setText("" + m.multiplicacion(numSeleccionado, i));
+//                } catch (Exception ee) {
+//                    //  System.err.println(ee.getMessage());
+//                }
+//            }
+//        }
+                 numeroSeleccionado();
     }
 
     /**
@@ -156,28 +194,27 @@ public class Manejador extends JFrame implements ItemListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jButtonSumar) {
-            num1 = Integer.parseInt(jTextNum1.getText());
-            num2 = Integer.parseInt(jTextNum2.getText());
-            //   jTextResult.setText("" + suma());
+            try {
+                num1 = Integer.parseInt(jTextNum1.getText());
+                num2 = Integer.parseInt(jTextNum2.getText());
+            } catch (NumberFormatException exp) {
+                System.err.println("Formato numérico erroneo ." + exp.getMessage());
+            }
+
             jTextResult.setText("" + m.suma(num1, num2));
-//            jTextNum1.setText("");
-//            jTextNum2.setText("");
+
         }
     }
-
-    /**
-     * Función que recoge los y devuelve la suma como Integer
-     *
-     * @return integer con la suma
-     */
-    int suma() {
-        try {
-            num1 = Integer.parseInt(jTextNum1.getText());
-            num2 = Integer.parseInt(jTextNum2.getText());
-            resultado = num1 + num2;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+    
+    public void numeroSeleccionado(){
+        int numSeleccionado=jComboBox.getSelectedIndex();
+        for (int i = 0; i < 10; i++) {
+             try {
+                    jTextResultado[i].setText("" + m.multiplicacion(numSeleccionado, i));
+                } catch (Exception ee) {
+                    //  System.err.println(ee.getMessage());
+                }
         }
-        return resultado;
+        
     }
 }

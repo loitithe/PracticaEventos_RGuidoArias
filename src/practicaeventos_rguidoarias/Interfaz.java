@@ -7,7 +7,6 @@ package practicaeventos_rguidoarias;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
 import javax.swing.JFrame;
 
 /**
@@ -22,10 +21,15 @@ public class Interfaz extends JFrame {
 
     public Interfaz() {
         this.setLayout(new GridBagLayout());
-  //      gl=new GridBagLayout();
         c = new GridBagConstraints();
         
     }
+
+    public Interfaz(GridBagLayout gl, GridBagConstraints c) {
+        this.gl = gl;
+        this.c = c;
+    }
+    
     
 
 }

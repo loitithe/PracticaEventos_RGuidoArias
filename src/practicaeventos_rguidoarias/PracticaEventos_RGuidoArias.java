@@ -23,7 +23,7 @@ public class PracticaEventos_RGuidoArias {
 
     Manejador e = new Manejador();
     e.setVisible(true);
-    e.setSize(400,500);
+    e.setSize(500,700);
     e.setLocation(500,400);
     e.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          

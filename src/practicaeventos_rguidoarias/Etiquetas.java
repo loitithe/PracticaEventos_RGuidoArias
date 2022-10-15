@@ -7,27 +7,26 @@ package practicaeventos_rguidoarias;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import static javax.swing.SwingConstants.CENTER;
 
 /**
  *
- * @author a22rodrigodga
+ * @author rodri
  */
-public class CajaTexto extends javax.swing.JTextField {
+public class Etiquetas extends JLabel {
 
-    public CajaTexto() {
-      //  setEditable(false);
+    public Etiquetas() {
         setHorizontalAlignment(CENTER);
         setBackground(Color.LIGHT_GRAY);
-        setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        setBorder(BorderFactory.createLineBorder(Color.CYAN));
         setFont(new Font("Arial", Font.ITALIC, 15));
-
     }
 
-    public CajaTexto(String texto) {
-        setEditable(false);
+    public Etiquetas(String texto) {
         setHorizontalAlignment(CENTER);
         setBackground(Color.LIGHT_GRAY);
-        setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        setBorder(BorderFactory.createLineBorder(Color.CYAN));
         setFont(new Font("Arial", Font.ITALIC, 15));
         setText(texto);
     }
