@@ -2,6 +2,7 @@ package Clase_Graphics;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -18,10 +19,13 @@ public class Main {
 }
 
 class Marco extends JFrame implements ActionListener {
-    JButton btn_dibujaCuadrado, btn_dibujaCirculo, btn_dibujaTriangulo, btn_limpiar;
-    JPanel panel_dibujo, panel_botones, panel_coordenadas;
-    JLabel lblCoordenadaX, lblCoordenadaY, lblAlto, lblAncho, lblColor;
-    JTextField txtCoordenadaX, txtCoordenadaY, txtAlto, txtAncho, txtColor;
+    private JButton btn_dibujaCuadrado, btn_dibujaCirculo, btn_dibujaTriangulo, btn_limpiar;
+    private JPanel panel_dibujo, panel_botones, panel_coordenadas;
+    private JLabel lblCoordenadaX, lblCoordenadaY, lblAlto, lblAncho, lblColor;
+    private JTextField txtCoordenadaX, txtCoordenadaY, txtAlto, txtAncho, txtColor;
+    private Graphics graphics;
+    private int[] datosDibujo = new int[4];
+    private String nombre_figura;
 
     public Marco() {
         setLayout(new BorderLayout());
@@ -53,9 +57,8 @@ class Marco extends JFrame implements ActionListener {
 
         panel_coordenadas = new JPanel();
         panel_coordenadas.setLayout(gl);
-
-        panel_dibujo = new JPanel();
-        panel_dibujo.setBackground(Color.lightGray);
+        // panel de dibujo, aqui se trabaja la clase graphics
+        panel_dibujo = new PanelDibujo();
 
         panel_botones = new JPanel();
 
@@ -110,31 +113,73 @@ class Marco extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // setResizable(false);
-        setLocation(500, 300);
-        setSize(600, 500);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        // TODO Auto-generated method stub
-        super.paint(g);
+        setLocation(200, 200);
+        setSize(1200, 800);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton btn_pulsado = (JButton) e.getSource();
+        String[] rgb = txtColor.getText().split(",");
+
+        int r = Integer.parseInt(rgb[0].trim());
+        int g = Integer.parseInt(rgb[1].trim());
+        int b = Integer.parseInt(rgb[2].trim());
+        Color colorDibujo = new Color(r, g, b);
+        graphics = panel_dibujo.getGraphics();
+        datosDibujo();
+        nombre_figura = btn_pulsado.getText();
         if (btn_pulsado.equals(btn_dibujaCirculo)) {
+            graphics.setColor(colorDibujo);
+            graphics.drawString("datos CIRCULO" + datosDibujo[0] + "," + datosDibujo[1] + "," + datosDibujo[2] + ","
+                    + datosDibujo[3], 10, 10);
+            graphics.setColor(colorDibujo);
+            graphics.fillOval(datosDibujo[0], datosDibujo[1], datosDibujo[2], datosDibujo[3]);
 
         }
         if (btn_pulsado.equals(btn_dibujaCuadrado)) {
-
+            graphics.setColor(colorDibujo);
+            graphics.drawString("datos CUADRADO" + datosDibujo[0] + "," + datosDibujo[1] + "," + datosDibujo[2] + ","
+                    + datosDibujo[3], 10, 10);
+            graphics = panel_dibujo.getGraphics();
+            graphics.drawString("datos figura" + datosDibujo[0] + "," + datosDibujo[1] + "," + datosDibujo[2] + ","
+                    + datosDibujo[3], 10, 10);
+            graphics.setColor(colorDibujo);
+            graphics.fillRect(datosDibujo[0], datosDibujo[1], datosDibujo[2], datosDibujo[3]);
         }
         if (btn_pulsado.equals(btn_dibujaTriangulo)) {
 
         }
         if (btn_pulsado.equals(btn_limpiar)) {
-
+            graphics.setColor(Color.LIGHT_GRAY);
+            graphics.fillRect(0, 0, panel_dibujo.getWidth(), panel_dibujo.getHeight());
         }
 
+    }
+
+    public int[] datosDibujo() {
+        try {
+            datosDibujo[0] = Integer.parseInt(txtCoordenadaX.getText());
+            datosDibujo[1] = Integer.parseInt(txtCoordenadaY.getText());
+            datosDibujo[2] = Integer.parseInt(txtAncho.getText());
+            datosDibujo[3] = Integer.parseInt(txtAlto.getText());
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+        return datosDibujo;
+    }
+
+    class PanelDibujo extends JPanel {
+
+        PanelDibujo() {
+            setBackground(Color.LIGHT_GRAY);
+        }
+
+        @Override
+        protected void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
+
+        }
     }
 }
