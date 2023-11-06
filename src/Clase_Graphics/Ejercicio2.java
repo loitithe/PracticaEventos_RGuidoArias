@@ -8,18 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Marco2 marco = new Marco2();
-
-    }
+public class Ejercicio2 {
+    Marco2 m = new Marco2();
 }
 
-class Marco extends JFrame implements ActionListener {
+class Marco2 extends JFrame implements ActionListener {
     private JButton btn_dibujaCuadrado, btn_dibujaCirculo, btn_dibujaTriangulo, btn_limpiar;
     private JPanel panel_dibujo, panel_botones, panel_coordenadas, panelCentral;
-    private JLabel lblCoordenadaX, lblCoordenadaY, lblAlto, lblAncho, lblColor;
-    private JTextField txtCoordenadaX, txtCoordenadaY, txtAlto, txtAncho, txtColor;
+    private JLabel lblCoordenadaX, lblCoordenadaY, lbl2coordenadaX, lbl2coordenadaY, lblColor;
+    private JTextField txtCoordenadaX, txtCoordenadaY, txt2coordenadaY, txt2coordenadaX, txtColor;
     private Graphics graphics;
     private JList jList;
     private DefaultListModel model;
@@ -28,14 +25,15 @@ class Marco extends JFrame implements ActionListener {
     private int r, g, b;
     private Color colorDibujo;
 
-    public Marco() {
+    private Punto punto1, punto2;
+
+    public Marco2() {
         setLayout(new BorderLayout());
+        setTitle("ejercicio 2");
         initComponents();
-        setTitle("marcoooo");
+
         add(panel_coordenadas, BorderLayout.NORTH);
         add(panelCentral, BorderLayout.CENTER);
-        // add(panelJList, BorderLayout.CENTER);
-        // add(panel_dibujo, BorderLayout.CENTER);
         add(panel_botones, BorderLayout.SOUTH);
     }
 
@@ -84,17 +82,17 @@ class Marco extends JFrame implements ActionListener {
         // JLabels
         lblCoordenadaX = new JLabel("Coordenada X");
         lblCoordenadaY = new JLabel("Coordenada Y");
-        lblAlto = new JLabel("Alto");
-        lblAncho = new JLabel("Ancho");
+        lbl2coordenadaX = new JLabel("Coordenada X");
+        lbl2coordenadaY = new JLabel("Coordenada Y");
         lblColor = new JLabel("Color");
 
         // JTextFields
         txtCoordenadaX = new JTextField("200");
 
         txtCoordenadaY = new JTextField("200");
-        txtAlto = new JTextField();
-        txtAncho = new JTextField();
-        txtColor = new JTextField();
+        txt2coordenadaY = new JTextField();
+        txt2coordenadaX = new JTextField();
+        txtColor = new JTextField("0,0,170");
 
         // JButtons
         btn_dibujaCuadrado = new JButton("Cuadrado");
@@ -118,11 +116,11 @@ class Marco extends JFrame implements ActionListener {
         panel_coordenadas.add(lblCoordenadaY);
         panel_coordenadas.add(txtCoordenadaY);
 
-        panel_coordenadas.add(lblAlto);
-        panel_coordenadas.add(txtAlto);
+        panel_coordenadas.add(lbl2coordenadaX);
+        panel_coordenadas.add(txt2coordenadaY);
 
-        panel_coordenadas.add(lblAncho);
-        panel_coordenadas.add(txtAncho);
+        panel_coordenadas.add(lbl2coordenadaY);
+        panel_coordenadas.add(txt2coordenadaX);
 
         panel_coordenadas.add(lblColor);
         panel_coordenadas.add(txtColor);
@@ -149,6 +147,7 @@ class Marco extends JFrame implements ActionListener {
             graphics.setColor(Color.LIGHT_GRAY);
             graphics.fillRect(0, 0, panel_dibujo.getWidth(), panel_dibujo.getHeight());
         }
+
         datosDibujo();
         if (btn_pulsado.equals(btn_dibujaCirculo)) {
             dibujarCirculo(graphics, colorDibujo);
@@ -165,12 +164,22 @@ class Marco extends JFrame implements ActionListener {
     public int[] datosDibujo() {
         try {
             if (!txtCoordenadaX.getText().equals("") && !txtCoordenadaY.getText().equals("") &&
-                    !txtAncho.getText().equals("") && !txtAlto.getText().equals("") && !txtColor.getText().equals("")) {
+                    !txt2coordenadaX.getText().equals("") && !txt2coordenadaY.getText().equals("")
+                    && !txtColor.getText().equals("")) {
 
                 datosDibujo[0] = Integer.parseInt(txtCoordenadaX.getText());
                 datosDibujo[1] = Integer.parseInt(txtCoordenadaY.getText());
-                datosDibujo[2] = Integer.parseInt(txtAncho.getText());
-                datosDibujo[3] = Integer.parseInt(txtAlto.getText());
+                datosDibujo[2] = Integer.parseInt(txt2coordenadaX.getText());
+                datosDibujo[3] = Integer.parseInt(txt2coordenadaY.getText());
+
+                // class punto
+
+                punto1 = new Punto(Double.parseDouble(txtCoordenadaX.getText()),
+                        Double.parseDouble(txtCoordenadaY.getText()));
+                punto2 = new Punto(Double.parseDouble(txt2coordenadaX.getText()),
+                        Double.parseDouble(txt2coordenadaY.getText()));
+                int distancia = (int) punto1.calcularDistancia(punto2);
+                System.out.println("distancia " + distancia);
 
                 String[] rgb = txtColor.getText().split(",");
 
